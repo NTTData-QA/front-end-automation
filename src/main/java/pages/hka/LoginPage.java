@@ -1,40 +1,26 @@
 package pages.hka;
 
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import utilities.Constants;
 
-import java.time.Duration;
+public class LoginPage extends HerokuApp {
 
-import static org.openqa.selenium.support.PageFactory.initElements;
-import static utilities.DriverConfiguration.getDriver;
+  @FindBy(id = "username")
+  WebElement usernameField;
 
-public class LoginPage {
-    private WebDriver driver;
+  @FindBy(id = "password")
+  WebElement passwordField;
 
-    @FindBy(id = "username")
-    WebElement usernameField;
+  @FindBy(css = "#login button")
+  WebElement loginButton;
 
-    @FindBy(id = "password")
-    WebElement passwordField;
+  public void fillForm() {
+    usernameField.sendKeys("tomsmith");
+    passwordField.sendKeys("SuperSecretPassword!");
+  }
 
-    @FindBy(css = "#login button")
-    WebElement loginButton;
-
-    public LoginPage(){
-        driver = getDriver();
-        initElements(new AppiumFieldDecorator(driver, Duration.ofSeconds(Constants.LOW_TIMEOUT)), this);
-    }
-
-    public void fillForm(){
-        usernameField.sendKeys("tomsmith");
-        passwordField.sendKeys("SuperSecretPassword!");
-    }
-
-    public SecureAreaPage clickButton(){
-        loginButton.click();
-        return new SecureAreaPage();
-    }
+  public SecureAreaPage clickButton() {
+    loginButton.click();
+    return new SecureAreaPage();
+  }
 }
