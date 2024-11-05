@@ -13,7 +13,7 @@ public class KeyPressesTest extends GenericTest<KeyPressesPage> {
 
   @Test
   public void sendSeveralKeys() {
-    KeyPressesPage keyPage = controller.clickKeyPressesLink();
+    KeyPressesPage keyPage = controller.clickElement(controller.keyLink, KeyPressesPage.class);
     keyPage.sendTab();
     assertTrue("Result text does not match up!", keyPage.getResultText().contains("TAB"));
     keyPage.sendEscape();

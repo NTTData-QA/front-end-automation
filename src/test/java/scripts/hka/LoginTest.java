@@ -12,12 +12,13 @@ import scripts.TestErrorHandler;
 @ExtendWith(TestErrorHandler.class)
 public class LoginTest extends GenericTest<LoginPage> {
 
-    @Test
-    public void successfulLogin(){
-        LoginPage loginPage = controller.clickFormAuthentication();
-        loginPage.fillForm();
-        SecureAreaPage secureAreaPage = loginPage.clickButton();
-        assertTrue("Alert text does not match up!",
-                secureAreaPage.getAlertText().contains("You logged into a secure area!"));
-    }
+  @Test
+  public void successfulLogin() {
+    LoginPage loginPage = controller.clickElement(controller.formLink, LoginPage.class);
+    loginPage.fillForm();
+    SecureAreaPage secureAreaPage = loginPage.clickButton();
+    assertTrue(
+        "Alert text does not match up!",
+        secureAreaPage.getAlertText().contains("You logged into a secure area!"));
+  }
 }

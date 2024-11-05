@@ -4,25 +4,20 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import pages.GenericPage;
 
-import utilities.enums.Direction;
-
 public class HerokuApp extends GenericPage {
 
   @FindBy(linkText = "Form Authentication")
-  WebElement formLink;
+  public WebElement formLink;
 
   @FindBy(linkText = "Key Presses")
-  WebElement keyLink;
+  public WebElement keyLink;
 
-  public LoginPage clickFormAuthentication() {
-    formLink.click();
-    return new LoginPage();
-  }
-
-  public KeyPressesPage clickKeyPressesLink() {
-    scrollToElement(keyLink, Direction.UP, false);
-    waitForAnimationToFinish();
-    keyLink.click();
-    return new KeyPressesPage();
+  public <T> T clickElement(WebElement element, Class<T> pageClass) {
+    element.click();
+    try {
+      return pageClass.getDeclaredConstructor().newInstance();
+    } catch (Exception e) {
+      throw new RuntimeException("Failed to create page instance: " + pageClass.getName(), e);
+    }
   }
 }
