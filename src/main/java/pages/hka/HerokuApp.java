@@ -12,6 +12,9 @@ public class HerokuApp extends GenericPage {
   @FindBy(linkText = "Key Presses")
   public WebElement keyLink;
 
+  @FindBy(linkText = "Dropdown")
+  public WebElement dropLink;
+
   public <T> T clickElement(WebElement element, Class<T> pageClass) {
     element.click();
     try {
