@@ -1,44 +1,42 @@
 package pages;
 
-import static org.openqa.selenium.support.PageFactory.initElements;
-import static utilities.DriverConfiguration.getDriver;
-
-import io.appium.java_client.pagefactory.AndroidFindBy;
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
-import java.time.Duration;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import utilities.Constants;
-import utilities.FrontEndOperation;
 
-public class Marca extends FrontEndOperation {
-  private WebDriver driver;
+public class Marca extends GenericPage {
 
-  @FindBy(id = "ue-accept-notice-button")
-  WebElement acceptCookies;
+    @FindBy(id = "ue-accept-notice-button")
+    WebElement acceptCookies;
 
-  @FindBy(partialLinkText = "Noticia que no existe")
-  @AndroidFindBy(
-      xpath =
-          "(//android.widget.LinearLayout[@resource-id=\"com.iphonedroid.marca:id/portadilla_container\"])[3]")
-  WebElement randomNotice;
+    @FindBy(css = "a.tools-corporative-link[title='Login']")
+    WebElement loginButton;
 
-  @FindBy(id = "buttonYes")
-  WebElement ageButton;
+    @FindBy(id = "email")
+    WebElement emailField;
 
-  @FindBy(className = "ue-c-cover-content__link")
-  @AndroidFindBy(id = "com.iphonedroid.marca:id/ue_cms_list_item_text_container")
-  WebElement noticia;
+    @FindBy(className = "mdc-button__label")
+    WebElement nextButton;
 
-  public Marca() {
-    driver = getDriver();
-    initElements(new AppiumFieldDecorator(driver, Duration.ofSeconds(Constants.LOW_TIMEOUT)), this);
-  }
+    @FindBy(id = "mat-mdc-error-0")
+    private WebElement errorMessage;
 
-  public void acceptCookies() {
-    if (isVisible(acceptCookies)) {
-      acceptCookies.click();
+    public void acceptCookies() {
+        if (isVisible(acceptCookies)) {
+            acceptCookies.click();
+        }
     }
-  }
+
+    public void fillLogin() {
+        loginButton.click();
+        emailField.sendKeys("Forcing error...");
+        nextButton.click();
+    }
+
+    public void compareVisibleMessage() {
+        compareTexts(errorMessage, "Forcing error");
+    }
+
+    public boolean isVisible() {
+        return errorMessage.isDisplayed();
+    }
 }

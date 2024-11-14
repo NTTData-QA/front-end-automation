@@ -1,47 +1,24 @@
 package scripts;
 
-import static helpers.Runners.runAccessibilityCopy;
-import static helpers.Runners.runAllureReport;
-
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.Test;
 import pages.Marca;
-import utilities.*;
 
-@ExtendWith(TestErrorHandler.class)
-public class MarcaTest {
+import static org.hamcrest.Matchers.is;
+import static utilities.FrontEndOperation.checkThat;
 
-  private static Marca controller;
+public class MarcaTest extends GenericTest<Marca> {
 
-  @BeforeAll
-  public static void clean_reports_logs() {
-    JSExecutor.runCommand(
-        LocalEnviroment.isWindows()
-            ? Constants.ALLURE_CLEAN_COMMAND_WIN
-            : Constants.ALLURE_CLEAN_COMMAND_MAC);
-    AllureReport.fillReportInfo();
-  }
+    @Test
+    public void checkMessageVisibility() {
+        controller.acceptCookies();
+        controller.fillLogin();
+        checkThat("Comparing visible message", controller.isVisible(), is(true));
+    }
 
-  @BeforeEach
-  public void iAmOnTheMarcaWebsite() {
-    controller = new Marca();
-  }
-
-  @Test
-  public void checkNewsArticleImage() {
-    controller.acceptCookies();
-  }
-
-  @AfterEach
-  public void closeDriver() {
-    Accessibility.checkAccessibility();
-    NetworkLogs.getNetworkLogs();
-    AllureReport.fillReportInfo();
-  }
-
-  @AfterAll
-  public static void runReports() {
-    runAllureReport();
-    runAccessibilityCopy();
-  }
+    @Test
+    public void checkErrorMessage() {
+        controller.acceptCookies();
+        controller.fillLogin();
+        controller.compareVisibleMessage();
+    }
 }
